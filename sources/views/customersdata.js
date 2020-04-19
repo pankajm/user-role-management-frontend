@@ -16,7 +16,9 @@ export default class CustomersData extends JetView {
             ok:"Yes", cancel:"Cancel",
             callback:(res) => {
               if(res){
-                customers.remove(id);
+                webix.ajax().del('http://localhost:3000/api/users/'+id).then((data) => {
+                  customers.remove(id);
+                })
               }
             }
           })
@@ -27,6 +29,9 @@ export default class CustomersData extends JetView {
           console.log('Edit clicked'+id);
         },
 
+      },
+      onAfterLoad:() => {
+        console.log('onafterload');
       },
 			columns:[
         {id:"edit", select:true, header:"", template:"<button class='edit_button'>{common.editIcon()}</button>"},
@@ -39,6 +44,8 @@ export default class CustomersData extends JetView {
   }
   
   init(view){
-    view.parse(customers);
+    customers.waitData.then(() => {
+      view.parse(customers);
+    });
   }
 }

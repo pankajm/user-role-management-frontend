@@ -1,8 +1,6 @@
 import {JetView, plugins} from "webix-jet";
 import {customers} from "models/customers";
 
-
-
 export default class CustomersForm extends JetView {
 	config() {
 		return {
@@ -61,10 +59,16 @@ export default class CustomersForm extends JetView {
 
   saveCustomer(values){
     const id = values.id;
-    if(id)
-      customers.updateItem(id, values)
-    else  
-      customers.add(values);
+    if(id){
+      webix.ajax().put('http://localhost:3000/api/users/'+id, values).then((data) => {
+        customers.updateItem(id, values)
+      })
+    }
+    else{  
+      webix.ajax().post('http://localhost:3000/api/users', values).then((data) => {
+        console.log(data.text());
+        customers.add(values);
+      });
+    }
   }
-  
 }
