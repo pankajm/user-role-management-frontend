@@ -11,7 +11,15 @@ export default class CustomersData extends JetView {
       scroll:"y",
       onClick:{
         delete_button: function (ev, id){
-          this.remove(id);
+          webix.confirm({
+            text:"The User will be deleted, <br/> Are you sure?",
+            ok:"Yes", cancel:"Cancel",
+            callback:(res) => {
+              if(res){
+                customers.remove(id);
+              }
+            }
+          })
         },
 
         edit_button: function (ev, id){
@@ -25,7 +33,7 @@ export default class CustomersData extends JetView {
         {id:"name", header:["Name", {content:"textFilter"}], sort:"text", width:200},
         {id:"email", header:["Email", {content:"textFilter"}], sort:"text", fillspace:true},
         {id:"role", header:["Role", {content:"textFilter"}], sort:"text", width:200},
-        {id: "delete", template: "<button class='delete_button'>{common.trashIcon()}</button>"}
+        {id: "delete", select:true, header:"", template: "<button class='delete_button'>{common.trashIcon()}</button>"}
       ]
 		}
   }

@@ -36,11 +36,12 @@ export default class CustomersForm extends JetView {
       ],
       rules:{
         name:webix.rules.isNotEmpty,
-        email:webix.rules.isEmail
+        email:webix.rules.isEmail,
+        role:webix.rules.isNotEmpty
       }
 		}
   }
-  
+
   urlChange(form){
     customers.waitData.then(() => {
       const id = this.getParam("id");
@@ -62,6 +63,8 @@ export default class CustomersForm extends JetView {
     const id = values.id;
     if(id)
       customers.updateItem(id, values)
+    else  
+      customers.add(values);
   }
   
 }
