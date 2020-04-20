@@ -1,4 +1,5 @@
-Webix Jet Demo App
+This repo contains webix based frontend code for user-role-management system. Please follow below commands after you start backend server.
+
 ===================
 
 ### How to run
@@ -8,24 +9,3 @@ Webix Jet Demo App
 - open ```http://localhost:8080```
 
 For more details, check https://www.gitbook.com/book/webix/webix-jet/details
-
-### Other commands
-
-#### Run lint
-
-```
-npm run lint
-```
-
-#### Build production files
-
-```
-npm run build
-```
-
-After that you can copy the "codebase" folder to the production server
-
-
-### License
-
-MIT
