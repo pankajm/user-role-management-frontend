@@ -8,5 +8,6 @@ After cloning this git repo run following commands.
  
 - run ```npm install```
 - run ```npm start```
-- open ```http://localhost:8080```
+- browser will automatically open with url ```http://localhost:8080/#!/top/customers```
+- if browser doesn't open, please hit above url manually from browser.
 
