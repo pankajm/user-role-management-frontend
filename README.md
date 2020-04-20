@@ -8,4 +8,3 @@ This repo contains webix based frontend code for user-role-management system. Pl
 - run ```npm start```
 - open ```http://localhost:8080```
 
-For more details, check https://www.gitbook.com/book/webix/webix-jet/details
