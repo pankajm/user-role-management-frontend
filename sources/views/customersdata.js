@@ -27,6 +27,7 @@ export default class CustomersData extends JetView {
         edit_button: function (ev, id){
           this.$scope.show("customers?id="+id);
           console.log('Edit clicked'+id);
+          this.app.callEvent("roles:get");
         },
 
       },
@@ -45,6 +46,8 @@ export default class CustomersData extends JetView {
   
   init(view){
     customers.waitData.then(() => {
+      console.log('customers - ');
+      console.log(customers);
       view.parse(customers);
     });
   }

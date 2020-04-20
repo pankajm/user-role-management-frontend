@@ -1,7 +1,7 @@
 import {JetView, plugins} from "webix-jet";
 import CustomersData from "views/customersdata";
 import CustomersForm from "views/forms/customersform";
-
+import RolesView from "views/roles";
 
 export default class CustomersView extends JetView {
 	config() {
@@ -20,12 +20,15 @@ export default class CustomersView extends JetView {
               icon:"plus", label:"Add customer", width:140,
               click:() => {
                 this.$$('multi').setValue("formView");
+                this.app.callEvent("roles:get");
               }
             },
             {
               view:"button", id:"button:manage", type:"iconButton",
               icon:"plus", label:"Manage Roles", width:140,
               click:() => {
+                console.log('event called');
+                this.app.callEvent("roles:show");
                 // this.$$('multi').setValue("formView");
               }
             }
@@ -61,6 +64,10 @@ export default class CustomersView extends JetView {
       this.$$("multi").setValue("formView");
     else
       this.$$("multi").setValue("gridView");
+  }
+
+  init(view){
+    this.window = this.ui(RolesView);
   }
   
 }

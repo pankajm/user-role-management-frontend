@@ -1,7 +1,9 @@
 import {JetView, plugins} from "webix-jet";
 import {customers} from "models/customers";
+import {getRoles} from "models/roles";
 
 export default class CustomersForm extends JetView {
+  
 	config() {
 		return {
       view : "form", paddingY:20, paddingX:30,
@@ -10,8 +12,8 @@ export default class CustomersForm extends JetView {
         {type:"header", height:45, template:"Customers Info Editor"},
         {view:"text", name:"name", label:"Name"},
         {view:"text", name:"email", label:"Email"},
-        {view:"combo", name:"role", label:"Role",
-         options:["Admin", "Supervisor", "Client"]
+        {view:"combo", name:"role", label:"Role", localId:'roleCombo',
+         options: []
         },
         {
           margin:10,
@@ -40,13 +42,23 @@ export default class CustomersForm extends JetView {
 		}
   }
 
+  init(){
+    this.on(this.app, "roles:get", () => {   
+      this.$$('roleCombo').getPopup().getList().clearAll();
+      getRoles().then((data)=>{
+        let rolesArray = data.map(obj => obj.role);
+        this.$$('roleCombo').getPopup().getList().parse(rolesArray);
+      })
+    }) 
+  }
+  
   urlChange(form){
     customers.waitData.then(() => {
       const id = this.getParam("id");
-    if(id && customers.exists(id)){
-      console.log(customers.getItem(id))
-      form.setValues(customers.getItem(id));
-    }
+      if(id && customers.exists(id)){
+        console.log(customers.getItem(id))
+        form.setValues(customers.getItem(id));
+      }
     })
   }
 
@@ -66,8 +78,7 @@ export default class CustomersForm extends JetView {
     }
     else{  
       webix.ajax().post('http://localhost:3000/api/users', values).then((data) => {
-        console.log(data.text());
-        customers.add(values);
+        customers.add(data.json());
       });
     }
   }
