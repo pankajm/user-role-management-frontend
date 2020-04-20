@@ -10,14 +10,9 @@ export default class CustomersView extends JetView {
         {
           view:"toolbar", css:"subbar", padding:0,
           elements:[
-            // {
-            //   height:50, css:"title", borderless:true,
-            //   template:`<div class='header'>Customers</div>`
-            //             // <div class='details'>( info & editing )</div>`
-            // },
             {
               view:"button", id:"button:add", type:"iconButton",
-              icon:"plus", label:"Add customer", width:140,
+              icon:"plus", label:"Add User", width:140,
               click:() => {
                 this.$$('multi').setValue("formView");
                 this.app.callEvent("roles:get");
@@ -27,9 +22,7 @@ export default class CustomersView extends JetView {
               view:"button", id:"button:manage", type:"iconButton",
               icon:"plus", label:"Manage Roles", width:140,
               click:() => {
-                console.log('event called');
                 this.app.callEvent("roles:show");
-                // this.$$('multi').setValue("formView");
               }
             }
           ]
@@ -43,7 +36,7 @@ export default class CustomersView extends JetView {
             {id:"formView", $subview:CustomersForm}
           ],
           on:{
-            onViewChange:(prev)=>{
+            onViewChange:(prev)=>{       // To disable-enable add user / manage roles button
               if(prev == "gridView"){
                 this.$$("button:add").disable();
                 this.$$("button:manage").disable();
@@ -58,6 +51,8 @@ export default class CustomersView extends JetView {
       ]   
 		};
   }
+
+  /** Function to detect url change to change multiview value */
   urlChange(){
     const id = this.getParam("id");
     if(id)
@@ -66,6 +61,8 @@ export default class CustomersView extends JetView {
       this.$$("multi").setValue("gridView");
   }
 
+
+  /** For Roles window  */
   init(view){
     this.window = this.ui(RolesView);
   }

@@ -10,7 +10,7 @@ export default class CustomersData extends JetView {
       select: true,
       scroll:"y",
       onClick:{
-        delete_button: function (ev, id){
+        delete_button: function (ev, id){    // Deleting the user
           webix.confirm({
             text:"The User will be deleted, <br/> Are you sure?",
             ok:"Yes", cancel:"Cancel",
@@ -24,10 +24,9 @@ export default class CustomersData extends JetView {
           })
         },
 
-        edit_button: function (ev, id){
+        edit_button: function (ev, id){     //Editing user details
           this.$scope.show("customers?id="+id);
-          console.log('Edit clicked'+id);
-          this.app.callEvent("roles:get");
+          this.$scope.app.callEvent("roles:get");
         },
 
       },
@@ -46,8 +45,6 @@ export default class CustomersData extends JetView {
   
   init(view){
     customers.waitData.then(() => {
-      console.log('customers - ');
-      console.log(customers);
       view.parse(customers);
     });
   }

@@ -46,8 +46,9 @@ export default class RolesView extends JetView {
                 autoConfig: true,
                 select: true,
                 scroll: "y",
+                fitBiggest:true,
                 columns:[
-                  {id:"role", header:["Search Roles", {content:"textFilter"}], sort:"text", width:200},
+                  {id:"role", header:["Search Roles", {content:"textFilter"}], sort:"text", width:500},
                   {id: "delete", select:true, header:"", template: "<button class='delete_button'>{common.trashIcon()}</button>"}
                 ],
                 data : roles,
@@ -77,16 +78,21 @@ export default class RolesView extends JetView {
     }
   }
 
+  /** To show window */
   init(view){
     this.on(this.app, "roles:show", () => {   
-      console.log('event received');
       view.show();
     })
   }
 
   saveRole(role){
-    webix.ajax().post('http://localhost:3000/api/roles', role).then((data) => {
-        roles.add(data.json());
-      });
+    webix.ajax().post('http://localhost:3000/api/roles', role)
+    .then((data) => {
+      roles.add(data.json());
+    })
+    .fail((xhr) => {
+      var response = JSON.parse(xhr.response);
+      webix.message({type: 'error', text: response.error.message});
+    })
   }
 }

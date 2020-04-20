@@ -9,7 +9,7 @@ export default class CustomersForm extends JetView {
       view : "form", paddingY:20, paddingX:30,
       elementsConfig: {labelWidth:100},
 			elements:[
-        {type:"header", height:45, template:"Customers Info Editor"},
+        {type:"header", height:45, template:"Users Info Editor"},
         {view:"text", name:"name", label:"Name"},
         {view:"text", name:"email", label:"Email"},
         {view:"combo", name:"role", label:"Role", localId:'roleCombo',
@@ -56,7 +56,6 @@ export default class CustomersForm extends JetView {
     customers.waitData.then(() => {
       const id = this.getParam("id");
       if(id && customers.exists(id)){
-        console.log(customers.getItem(id))
         form.setValues(customers.getItem(id));
       }
     })
@@ -72,14 +71,24 @@ export default class CustomersForm extends JetView {
   saveCustomer(values){
     const id = values.id;
     if(id){
-      webix.ajax().put('http://localhost:3000/api/users/'+id, values).then((data) => {
+      webix.ajax().put('http://localhost:3000/api/users/'+id, values)
+      .then((data) => {
         customers.updateItem(id, values)
+      })
+      .fail((xhr) => {
+        var response = JSON.parse(xhr.response);
+        webix.message({type: 'error', text: response.error.message});
       })
     }
     else{  
-      webix.ajax().post('http://localhost:3000/api/users', values).then((data) => {
+      webix.ajax().post('http://localhost:3000/api/users', values)
+      .then((data) => {
         customers.add(data.json());
-      });
+      })
+      .fail((xhr) => {
+        var response = JSON.parse(xhr.response);
+        webix.message({type: 'error', text: response.error.message});
+      })
     }
   }
 }
